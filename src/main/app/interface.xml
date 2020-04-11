@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:context="http://www.springframework.org/schema/context" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
+    <http:listener-config name="blog-mule3-app-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <apikit:config name="blog-mule3-app-config" raml="blog-mule3-app.raml" consoleEnabled="false" doc:name="Router"/>
+	<context:property-placeholder location="application.properties"/>
+    <flow name="blog-mule3-app-main">
+        <http:listener config-ref="blog-mule3-app-httpListenerConfig" path="/api/*" doc:name="HTTP"/>
+        <apikit:router config-ref="blog-mule3-app-config" doc:name="APIkit Router"/>
+        <exception-strategy ref="blog-mule3-app-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
+    </flow>
+    <flow name="blog-mule3-app-console">
+        <http:listener config-ref="blog-mule3-app-httpListenerConfig" path="/console/*" doc:name="HTTP"/>
+        <apikit:console config-ref="blog-mule3-app-config" doc:name="APIkit Console"/>
+    </flow>
+    <flow name="put:/accounts:application/json:blog-mule3-app-config">
+		<flow-ref name="putAccountsFlow" doc:name="putAccountFlow"/>
+
+    </flow>
+    <flow name="put:/users:application/json:blog-mule3-app-config">
+		<flow-ref name="putAccountsFlow" doc:name="putUserFlow"/>
+
+    </flow>
+    <flow name="delete:/accounts/comments/{id}:blog-mule3-app-config">
+		<flow-ref name="deleteAccountsCommentsByIdFlow" doc:name="deleteAccountCommentFlow"/>
+
+    </flow>
+    <flow name="delete:/accounts/posts/{id}:blog-mule3-app-config">
+		<flow-ref name="deleteAccountsPostByIdFlow" doc:name="deleteAccountPostFlow"/>
+
+    </flow>
+    <flow name="delete:/users/{id}:blog-mule3-app-config">
+		<flow-ref name="deleteUsersFlow" doc:name="deleteUserFlow"/>
+
+    </flow>
+    <flow name="delete:/categories/{id}:blog-mule3-app-config">
+		<flow-ref name="deleteCategoriesByIdFlow" doc:name="deleteCategoryFlow"/>
+
+    </flow>
+    <flow name="get:/posts:blog-mule3-app-config">
+		<flow-ref name="getPostsFlow" doc:name="getPostsFlow"/>
+
+    </flow>
+    <flow name="get:/users:blog-mule3-app-config">
+		<flow-ref name="getUsersFlow" doc:name="getUserFlow"/>
+
+    </flow>
+    <flow name="get:/categories:blog-mule3-app-config">
+		<flow-ref name="getCategoriesFlow" doc:name="getCategoriesFlow"/>
+
+    </flow>
+    <flow name="get:/accounts:blog-mule3-app-config">
+		<flow-ref name="getAccountsFlow" doc:name="getAccountFlow"/>
+
+    </flow>
+    <flow name="get:/comments:blog-mule3-app-config">
+		<flow-ref name="getCommentsFlow" doc:name="getCommentsFlow"/>
+
+    </flow>
+    <flow name="get:/accounts/comments:blog-mule3-app-config">
+		<flow-ref name="getAccountsCommentsFlow" doc:name="getAccountCommentsFlow"/>
+
+    </flow>
+    <flow name="get:/accounts/comments/{id}:blog-mule3-app-config">
+		<flow-ref name="getAccountsCommentsByIdFlow" doc:name="getAccountCommentFlow"/>
+
+    </flow>
+    <flow name="get:/accounts/posts/{id}:blog-mule3-app-config">
+		<flow-ref name="getAccountsPostsByIdFlow" doc:name="getAccountPostFlow"/>
+
+    </flow>
+    <flow name="get:/accounts/posts:blog-mule3-app-config">
+		<flow-ref name="getAccountsPostsFlow" doc:name="getAccountPostsFlow"/>
+
+    </flow>
+    <flow name="get:/posts/{id}:blog-mule3-app-config">
+		<flow-ref name="getPostsByIdFlow" doc:name="getPostFlow"/>
+
+    </flow>
+    <flow name="get:/categories/{id}:blog-mule3-app-config">
+		<flow-ref name="getCategoriesByIdFlow" doc:name="getCategoryFlow"/>
+
+    </flow>
+    <flow name="get:/users/{id}:blog-mule3-app-config">
+		<flow-ref name="getUsersByIdFlow" doc:name="getUserFlow"/>
+
+    </flow>
+    <flow name="get:/comments/{id}:blog-mule3-app-config">
+		<flow-ref name="getCommentsByIdFlow" doc:name="getCommentFlow"/>
+
+    </flow>
+    <flow name="post:/categories:application/json:blog-mule3-app-config">
+		<flow-ref name="postCategoriesFlow" doc:name="postCategoriesFlow"/>
+
+    </flow>
+    <flow name="post:/users:application/json:blog-mule3-app-config">
+		<flow-ref name="postUsersFlow" doc:name="postUserFlow"/>
+
+    </flow>
+    <flow name="post:/login:application/json:blog-mule3-app-config">
+		<flow-ref name="postLoginFlow" doc:name="postLoginFlow"/>
+
+    </flow>
+    <flow name="post:/registation:application/json:blog-mule3-app-config">
+        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+        <set-payload value="{&#xA;  &quot;Created&quot;&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="post:/accounts/comments:application/json:blog-mule3-app-config">
+		<flow-ref name="postAccountsCommentsFlow" doc:name="postAccountCommentFlow"/>
+
+    </flow>
+    <flow name="post:/accounts/posts:application/json:blog-mule3-app-config">
+		<flow-ref name="postAccountsPostsFlow" doc:name="postAccountPostFlow"/>
+
+    </flow>
+    <apikit:mapping-exception-strategy name="blog-mule3-app-apiKitGlobalExceptionMapping">
+        <apikit:mapping statusCode="404">
+            <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="405">
+            <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="415">
+            <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="406">
+            <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="400">
+            <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+    </apikit:mapping-exception-strategy>
+</mule>
